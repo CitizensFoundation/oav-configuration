@@ -1,0 +1,41 @@
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../oav-ajax/oav-ajax-error-dialog.html">
+<link rel="import" href="oav-unexpected-state-dialog.html">
+<link rel="import" href="oav-confirmation-dialog.html">
+
+</head><body><dom-module id="oav-dialog-container">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        background-color: var(--primary-background-color);
+      }
+
+      #dialogs {
+        background-color: var(--primary-background-color) !important;
+      }
+
+      .authDialog {
+        font-size: 24px;
+        padding: 24px;
+        line-height: 1;
+        text-align: center;
+      }
+
+      paper-spinner {
+        width: 40px;
+        height: 40px;
+      }
+    </style>
+
+
+    <div id="dialogs">
+      <oav-ajax-error-dialog id="errorDialog"></oav-ajax-error-dialog>
+      <oav-unexpected-state-dialog id="unexpectedStateDialog"></oav-unexpected-state-dialog>
+      <oav-confirmation-dialog id="confirmationDialog"></oav-confirmation-dialog>
+    </div>
+  </template>
+
+  <script>Polymer({is:"oav-dialog-container",behaviors:[Polymer.appHelpers,Polymer.AppLocalizeBehavior],attached:function(){this.loadLanguage(this.resolveUrl("/src/locales.json"))},getDialog:function(e){return this.$$("#"+e)}});</script>
+</dom-module>
+</body></html>

@@ -1,0 +1,101 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="file-upload/file-upload.html">
+
+<link rel="import" href="oav-behaviors/app-helpers.html">
+
+<dom-module id="oav-ready-for-voting">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      .buttonContainer {
+        padding: 32px;
+        margin-top: 16px;
+      }
+
+      paper-button {
+        background-color: var(--app-accent-color);
+        color: #FFF;
+        padding: 16px;
+        margin: 16px;
+      }
+
+      paper-button.light {
+        background-color: var(--app-accent-color-light);
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+
+      paper-material {
+        background-color: #FFF;
+        padding: 16px;
+        margin: 16px;
+      }
+
+      .headerContainer {
+        width: 600px;
+        border-bottom: solid 2px;
+        border-color: #444;
+        font-size: 28px;
+        color: #222;
+        text-align: center;
+        margin-top: 0px;
+        margin-bottom: 32px;
+      }
+
+      .publicKey {
+        margin-bottom: 32px;
+      }
+    </style>
+
+    <div class="layout vertical center-center buttonContainer">
+      <div class="headerContainer">
+        {{localize('readyForVoting')}}
+      </div>
+        <paper-material election="2" class="layout vertical publicKey">
+          <div>
+            {{localize('publicKey')}}
+          </div>
+          <div>
+            [[publicKey]]
+          </div>
+        </paper-material>
+        <a href="/keys/download_private_key_backup"><paper-button raised>{{localize('downloadPrivateKeyBackup')}}</paper-button></a>
+        <a href="/keys/download_voting_database"><paper-button raised>{{localize('downloadVotingDatabase')}}</paper-button></a>
+    </div>
+
+    <div class="layout vertical center-center">
+
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'oav-ready-for-voting',
+
+      properties: {
+        publicKey: String
+      },
+
+      behaviors: [
+        Polymer.appHelpers,
+        Polymer.AppLocalizeBehavior
+      ],
+
+
+      _backupAndReset: function () {
+        this.fire('oav-trigger-backup-and-reset');
+      },
+
+      attached: function() {
+        this.loadLanguage(this.resolveUrl('locales.json'));
+      }
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,132 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../oav-behaviors/app-helpers.html">
+<link rel="import" href="../file-upload/file-upload.html">
+
+<dom-module id="oav-unexpected-state-dialog">
+  <style>
+
+    paper-dialog {
+      background-color: #FFF;
+    }
+
+    .bootHeader {
+      font-size: 24px;
+      font-weight: bold;
+      color: #F00;
+    }
+
+    .bootState {
+      font-size: 18px;
+      padding: 16px;
+      margin: 16px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .bootElement {
+      padding-bottom: 4px;
+    }
+  </style>
+
+  <template>
+
+    <paper-dialog id="dialog">
+      <div class="bootHeader">[[localize('unexpectedBootState')]]</div>
+
+      <div class="layout vertical bootState">
+        <div class="bootElement" hidden$="[[showVoteCount]]">
+          vote_count: [[response.vote_count]]
+        </div>
+        <div class="bootElement">
+          public_key: [[response.public_key]]
+        </div>
+        <div class="bootElement">
+          private_key_exists: [[response.private_key_exists]]
+        </div>
+        <div class="bootElement">
+          public_key_file_exists: [[response.public_key_file_exists]]
+        </div>
+        <div class="bootElement">
+          [[response.exception]]
+        </div>
+      </div>
+
+      <div class="buttons">
+        <paper-button dialog-confirm on-tap="_backupAndReset">{{localize('backupDestroyAndReset')}}</paper-button>
+      </div>
+
+    </paper-dialog>
+
+  </template>
+
+</dom-module>
+
+<script>
+  (function() {
+    Polymer({
+
+      is: 'oav-unexpected-state-dialog',
+
+      behaviors: [
+        Polymer.appHelpers,
+        Polymer.AppLocalizeBehavior
+      ],
+
+      properties: {
+
+        response: {
+          type: String,
+          observer: '_responseChanged'
+        },
+
+        open: {
+          type: Boolean,
+          value: false
+        },
+
+        showVoteCount: {
+          type: Boolean,
+          value: false
+        },
+
+        callbackFunction: Function
+      },
+
+      _newReadyDatabase: function () {
+        this.close();
+        window.mainApp._boot();
+      },
+
+      _responseChanged: function (response) {
+        if (response && response.vote_count && response.vote_count > -1) {
+          this.set('showVoteCount', true);
+        }
+      },
+
+      _backupAndReset: function () {
+        this.callbackFunction();
+      },
+
+      attached: function() {
+        this.loadLanguage(this.resolveUrl('../locales.json'));
+      },
+
+      showDialog: function(response, callbackFunction) {
+        this.set('response', response);
+        this.callbackFunction = callbackFunction;
+        this.set('open', true);
+        this.$$("#dialog").open();
+      },
+
+      close: function () {
+        this.$$("#dialog").close();
+      }
+    })
+  })();
+
+</script>
+

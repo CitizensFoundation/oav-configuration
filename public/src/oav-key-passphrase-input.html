@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<dom-module id="oav-key-passphrase-input">
+  <template>
+    <paper-input id="input" auto-validate minlength$="[[minLength]]" label$="[[label]]" id="password" type="password" value="{{password}}"></paper-input>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'oav-key-passphrase-input',
+
+      properties: {
+        password: {
+          type: String,
+          observer: '_passwordChanged',
+          value: ""
+        },
+
+        minLength: Number,
+
+        lowerCasePassword: {
+          type: String,
+          computed: '_lowerCasePassword(password)',
+          notify: true,
+          reflectToAttribute: true
+        },
+
+        label: String
+      },
+
+      validate: function () {
+        return this.$.input.validate();
+      },
+
+      _lowerCasePassword: function (password) {
+        if (password) {
+          return password.toLowerCase();
+        } else {
+          return null;
+        }
+      },
+
+      // Ascii plus . , ! 0..9 #
+      isValid: function (str) {
+        return /^[\x00-\x7F]*$/.test(str);
+      },
+
+      _passwordChanged: function (password) {
+        if (password) {
+          if (!this.isValid(password)) {
+            this.fire('oav-non-ascii-in-password');
+            // Villa: Þú getur bara notað bókstafi frá A-Z, tölur og þessi tákn . , ! vinsamlegast byrjaðu aftur.
+            this.set('password', "");
+          }
+        }
+      }
+    });
+  </script>
+</dom-module>
