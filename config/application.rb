@@ -30,7 +30,7 @@ module OpenActiveVotingApp
     config.i18n.locale = :en
 
     # Enable localization fallback to :en
-    config.i18n.fallbacks = true
+    config.i18n.fallbacks = [:en]
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]

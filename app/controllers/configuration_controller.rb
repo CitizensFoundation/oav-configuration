@@ -32,7 +32,7 @@ class ConfigurationController < ApplicationController
       vote_table_exists = ActiveRecord::Base.connection.table_exists? 'votes'
       config_table_exists = ActiveRecord::Base.connection.table_exists? 'config'
       items_table_exists = ActiveRecord::Base.connection.table_exists? 'ballot_items'
-      vote_count = (vote_table_exists and Vote.where.not(:saml_assertion_id=>nil).count) ? Vote.where.not(:saml_assertion_id=>nil).count : -1
+      vote_count = (vote_table_exists and Vote.count) ? Vote.count : -1
       items_count = (items_table_exists and BallotItem.count) ? BallotItem.count : -1
       public_key = (config_table_exists and BudgetConfig.first and BudgetConfig.first.public_key)
       client_config = nil#(config_table_exists and BudgetConfig.first and BudgetConfig.first.client_config)
@@ -116,7 +116,7 @@ class ConfigurationController < ApplicationController
     download_filename = Rails.root.join("Backups","sql","latest_for_download.sql")
     puts download_filename
     if File.exists?(download_filename)
-      send_file download_filename, :filename=>"open_active_voting_database_with_public_key_#{Time.now.strftime('%Y_%m_%d.%H_%M_%S')}.sql"
+      send_file download_filename, :filename=>"open_active_voting_database_#{Time.now.strftime('%Y_%m_%d.%H_%M_%S')}.sql"
     else
       render :file=>"#{Rails.root}/public/404.html", :status=>404
     end

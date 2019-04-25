@@ -203,15 +203,15 @@
             <div>
                 {{localize('hasVotes')}}
             </div>
-            <a href="/configuration/download_database">
+            <a href="/configuration/download_voting_database">
               <paper-button raised class="lightButton" dialog-confirm>
                   <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
-                  {{localize('clearVotes')}}
+                  {{localize('downloadDatabase')}}
                </paper-button>
             </a>
             <paper-button raised class="lightButton" dialog-confirm on-tap="_clearVotes">
                <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
-               {{localize('clearVotes')}}
+               {{localize('clearAllVotes')}}
             </paper-button>
           </div>
           <div name="unexpected">

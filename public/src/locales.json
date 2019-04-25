@@ -1,12 +1,14 @@
 {
   "en": {
+    "areYouSureYouWantToClearVotes": "Are you sure you want to clear all votes from the database?",
     "noDatabaseOrPublicKey": "No database or public key",
     "uploadBallotData": "Upload ballot data",
     "uploadClientConfig": "Upload client config",
-    "hasVotes": "This database already has votes and can't be configurated",
+    "hasVotes": "This database already has votes and can't be configured",
     "clearAllVotes": "Clear All Votes",
     "continue": "Continue",
     "uploadNewDatabase": "Upload New Database",
+    "downloadDatabase": "Download Database",
     "votesCount": "Total votes",
     "confirm": "confirm",
     "cancel": "Cancel",
