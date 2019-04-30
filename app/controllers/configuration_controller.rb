@@ -104,6 +104,9 @@ class ConfigurationController < ApplicationController
           format.json { render :json => {:ok => false, :exception => exception } }
         end
       end
+      respond_to do |format|
+        format.json { render :json => {:ok => true} }
+      end
     else
       respond_to do |format|
         format.json { render :json => {:ok => false} }
@@ -216,8 +219,13 @@ class ConfigurationController < ApplicationController
         I18n.locale = "en"
         area.name = row[0]
         area.save
+        I18n.locale = "is"
+        area.name = row[0]
+        area.save
+        I18n.locale = "en"
         @areas << area
       end
+      puts @areas
     end
   end
 
@@ -261,10 +269,13 @@ class ConfigurationController < ApplicationController
             :image_url=>image_url,
             :idea_url=>idea_url)
 
-          @locales.each do |locale|
+          @locales.each_with_index do |locale, locale_index|
             I18n.locale = locale[:locale_code]
-            item.name = row[locale[:index]]
-            item.description = row[locale[:index]+1]
+            name = row[locale[:index]-1]
+            description = row[locale[:index]]
+            #puts "LOCALE: #{locale} #{name} - #{description}"
+            item.name = name
+            item.description = description
             item.save
           end
         end

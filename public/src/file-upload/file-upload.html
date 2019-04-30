@@ -43,6 +43,7 @@ Example:
 
     #dropArea {
       text-align: center;
+      background-color: #FFF;
     }
 
     paper-button {
@@ -85,7 +86,8 @@ Example:
     }
 
     .containerMain {
-      background-color: var(--app-primary-color);
+      background-color: transparent;
+      color: #FFF;
     }
 
     paper-button {
@@ -96,7 +98,7 @@ Example:
   </style>
 
   <template>
-    <div class="containerMain">
+    <div class="containerMain layout vertical">
       <paper-button id="button" icon="file-upload" class="blue" on-click="_fileClick">
         <content></content>
       </paper-button>
@@ -426,6 +428,10 @@ Example:
 
       var url = this.target.replace("<name>", file.name);
       xhr.open(this.method, url, true);
+      if (!this.headers) {
+        this.headers['Content-Type']="application/json";
+      }
+
       for (key in this.headers) {
         if (this.headers.hasOwnProperty(key)) {
           xhr.setRequestHeader(key, this.headers[key]);
