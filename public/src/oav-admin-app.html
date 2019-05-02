@@ -230,7 +230,7 @@
                 [[ballotDataInfo]]
             </div>
 
-            <file-upload class="lightButton" id="clientConfigUpload" raised="true" multi="false" target="/configuration/upload_ballot_data" method="POST" on-success="_uploadBallotDataDone">
+            <file-upload class="lightButton" id="clientConfigUpload" raised="true" multi="false" target="/configuration/upload_ballot_data" method="POST" on-success="_uploadClientConfigDone">
               <iron-icon class="icon" icon="file-upload"></iron-icon>
               <span>[[localize('uploadBallotData')]]</span><br>
             </file-upload>
@@ -381,6 +381,10 @@
         this.async(function () {
           this._boot();
         }, 200);
+      },
+
+      _uploadClientConfigDone: function () {
+        this._boot();
       },
 
       _boot: function () {

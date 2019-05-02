@@ -73,6 +73,9 @@ class ConfigurationController < ApplicationController
       client_config = JSON.parse(params[:file].read)
       config = BudgetConfig.first
       config.client_config = client_config
+      puts client_config[:auth_url]
+      config.auth_url = client_config[:auth_url]
+      config.saml_idp_cert_fingerprint = client_config[:saml_idp_cert_fingerprint]
       config.save
       respond_to do |format|
         format.json { render :json => {:ok => true} }
