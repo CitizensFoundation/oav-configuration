@@ -234,6 +234,13 @@
               <iron-icon class="icon" icon="file-upload"></iron-icon>
               <span>[[localize('uploadBallotData')]]</span><br>
             </file-upload>
+
+            <a href="/configuration/download_voting_database">
+              <paper-button raised class="lightButton" dialog-confirm>
+                  <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
+                  {{localize('downloadDatabase')}}
+               </paper-button>
+            </a>
           </div>
         </iron-pages>
         <div class="layout horizontal center-center">
