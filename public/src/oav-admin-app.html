@@ -277,10 +277,13 @@
             <paper-material class="layout vertical center-center">
               <div class="layout horizontal">
                 <div class="layout vertical center-center self-start">
-                  <div class="layout vertical statusHeader">
+                  <div class="layout vertical statusHeader" hidden$="[[bootResponse.exception]]">
                       <h2>[[localize('votingDatabaseStatus')]]</h2>
                   </div>
-                  <div class="layout horizontal infoPanel">
+                  <div class="layout vertical statusHeader" hidden$="[[!bootResponse.exception]]">
+                    <h3>[[bootResponse.exception]]</h3>
+                </div>
+                <div class="layout horizontal infoPanel" hidden$="[[bootResponse.exception]]">
                     <div class="layout vertical table">
                       <div class="votesCount">
                         [[localize('votesCount')]]
@@ -551,7 +554,6 @@
           this.customStyle['--app-ready-for-voting-color'] = "#F00";
         }
         Polymer.updateStyles();
-
 
         this.set('bootResponse', JSON.parse(JSON.stringify(response)));
       },
