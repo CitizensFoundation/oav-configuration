@@ -20,6 +20,7 @@ require 'fileutils'
 require "csv"
 
 class ConfigurationController < ApplicationController
+  include ActionView::Helpers::DateHelper
 
   def boot
     puts "BOOTING"
@@ -31,11 +32,24 @@ class ConfigurationController < ApplicationController
     begin
       vote_table_exists = ActiveRecord::Base.connection.table_exists? 'votes'
       config_table_exists = ActiveRecord::Base.connection.table_exists? 'config'
-      items_table_exists = ActiveRecord::Base.connection.table_exists? 'ballot_items'
-      vote_count = (vote_table_exists and Vote.count) ? Vote.count : -1
-      items_count = (items_table_exists and BallotItem.count) ? BallotItem.count : -1
+      items_table_exists = ActiveRecord::Base.connection.table_exists? 'budget_ballot_items'
+      areas_table_exists = ActiveRecord::Base.connection.table_exists? 'budget_ballot_areas'
+      vote_count = (vote_table_exists and Vote.count) ? Vote.count : 0
+      authenticated_vote_count = (vote_table_exists) ? Vote.where.not(:saml_assertion_id=>nil).count : 0
+      items_count = (items_table_exists and BudgetBallotItem.count) ? BudgetBallotItem.count : 0
+      areas_count = (areas_table_exists and BudgetBallotArea.count) ? BudgetBallotArea.count : 0
       public_key = (config_table_exists and BudgetConfig.first and BudgetConfig.first.public_key)
-      client_config = nil#(config_table_exists and BudgetConfig.first and BudgetConfig.first.client_config)
+      client_config = (config_table_exists and BudgetConfig.first and BudgetConfig.first.client_config!=nil)
+      auth_url_exists = (config_table_exists and BudgetConfig.first and BudgetConfig.first.auth_url!=nil)
+      config_updated_at = (config_table_exists and BudgetConfig.first and BudgetConfig.first.updated_at)
+      ballot_data_updated_at = (areas_table_exists and BudgetBallotArea.first and BudgetBallotArea.first.updated_at)
+
+      if auth_url_exists and client_config and public_key and areas_count>0 and items_count>0
+        ready_for_voting = true
+      else
+        ready_for_voting = false
+      end
+
 
       if vote_count>0 and public_key
         boot_state = "has_votes"
@@ -55,7 +69,14 @@ class ConfigurationController < ApplicationController
       format.json { render :json => {:boot_state => boot_state,
                                      :vote_count => vote_count,
                                      :items_count => items_count,
-                                     :client_config => client_config,
+                                     :authenticated_vote_count => authenticated_vote_count,
+                                     :areas_count => areas_count,
+                                     :client_config_exists => client_config,
+                                     :auth_url_exists => auth_url_exists,
+                                     :config_updated_at => config_updated_at,
+                                     :ready_for_voting => ready_for_voting,
+                                     :config_time_ago => config_updated_at ? distance_of_time_in_words_to_now(config_updated_at) : "never",
+                                     :ballot_data_time_ago => ballot_data_updated_at ? distance_of_time_in_words_to_now(ballot_data_updated_at) : "never",
                                      :public_key_exists => public_key ? true : false,
                                      :exception => exception
                                     }
@@ -66,6 +87,9 @@ class ConfigurationController < ApplicationController
   def clear_votes
     Vote.delete_all
     ActiveRecord::Base.connection.execute("TRUNCATE votes")
+    respond_to do |format|
+      format.json { render :json => {:ok => true} }
+    end
   end
 
   def upload_client_config
@@ -75,6 +99,7 @@ class ConfigurationController < ApplicationController
       config.client_config = client_config
       puts config.auth_url = client_config["auth_url"]
       config.saml_idp_cert_fingerprint = client_config["saml_idp_cert_fingerprint"]
+      config.touch
       config.save
       respond_to do |format|
         format.json { render :json => {:ok => true} }

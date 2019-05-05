@@ -59,11 +59,11 @@
 
       :host {
         display: block;
-        --app-primary-color: var(--paper-orange-900);
+        --app-primary-color: #444;
         --app-secondary-color: black;
         --app-main-backround-color: #e0e0e0;
         --app-accent-color: var(--paper-orange-a700);
-        --app-accent-color-light: var(--paper-orange-a400);
+        --app-accent-color-light: var(--paper-orange-700);
         --app-kopavogur-green-grass: #e0e0e0;
         --paper-tabs-selection-bar-color: var(--app-accent-color);
         --paper-input-container-focus-color: var(--app-accent-color);
@@ -141,8 +141,25 @@
       .lightButton {
         background-color: var(--app-accent-color-light);
         color: #FFF !important;
-        margin: 32px;
-        margin-left: 0;
+        margin: 8px;
+      }
+
+      .lightButton[disabled] {
+        background-color: #777;
+        color: #FFF !important;
+        margin: 8px;
+      }
+
+      .redButton {
+        background-color: #F00;
+        color: #FFF !important;
+        margin: 8px;
+      }
+
+      .redButton[disabled] {
+        background-color: #777;
+        color: #FFF !important;
+        margin: 8px;
       }
 
       .icon {
@@ -171,6 +188,68 @@
         margin-top: 16px;
         margin-left: 16px;
       }
+
+      a {
+        text-decoration: none;
+      }
+
+      paper-material {
+        background-color: #FFF;
+        color: #333;
+        padding: 8px;
+        padding-bottom: 24px;
+      }
+
+      .infoPanel {
+        padding: 24px;
+        padding-top: 0;
+        padding-bottom: 16px;
+      }
+
+      .table {
+        padding: 8px;
+      }
+
+      .statusHeader {
+        margin-bottom: 8px;
+        height: 52px;
+      }
+
+      .ballotData {
+        color: var(--app-ballot-data-color);
+      }
+
+      .votesCount {
+        color: var(--app-votes-count-color);
+      }
+
+      .config {
+        color: var(--app-config-color);
+      }
+
+      .readyForVoting {
+        color: var(--app-ready-for-voting-color);
+        font-weight: 500;
+      }
+
+      paper-button, file-upload {
+        width: 250px;
+      }
+
+      .colDivider, .colDividerNoLine {
+        padding-top: 4px;
+        margin-top: 4px;
+      }
+
+      .colDivider {
+        border-top: 1px dashed #aaa;
+      }
+
+      .buttons {
+        padding-top: 46px;
+        margin-left: 16px;
+        margin-right: 16px;
+      }
     </style>
 
     <iron-signals on-iron-signal-set-language="setLanguage"></iron-signals>
@@ -187,12 +266,6 @@
               <div class="oavHeader">Open Active Voting</div>
               <div class="oavSubHeader">Configuration App 1.0</div>
             </div>
-
-            <div class="flex"></div>
-            <file-upload class="lightButton" id="logoImageUpload" raised="true" multi="false" target="/configuration/import_new_sql" method="POST" on-success="_newReadyDatabase">
-              <iron-icon class="icon" icon="file-upload"></iron-icon>
-              <span>[[localize('uploadNewDatabase')]]</span><br>
-            </file-upload>
           </div>
       </app-header>
       <div class="layout vertical center-center" style="padding: 24px;">
@@ -200,47 +273,112 @@
           <div name="boot" class="bootscreen layout horizontal center-center">
             <h1>[[localize('booting')]]</h1>
           </div>
-          <div name="hasVotes" class="layout vertical center-center">
-            <div>
-                {{localize('hasVotes')}}
-            </div>
-            <a href="/configuration/download_voting_database">
-              <paper-button raised class="lightButton" dialog-confirm>
-                  <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
-                  {{localize('downloadDatabase')}}
-               </paper-button>
-            </a>
-            <paper-button raised class="lightButton" dialog-confirm on-tap="_clearVotes">
-               <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
-               {{localize('clearAllVotes')}}
-            </paper-button>
-          </div>
-          <div name="unexpected">
-            {{localize('noDatabaseOrPublicKey')}}
-          </div>
-          <div name="readyForConfig" class="layout vertical center-center">
-            <div>
-                [[configInfo]]
-            </div>
-            <file-upload class="lightButton" id="clientConfigUpload" raised="true" multi="false" target="/configuration/upload_client_config" method="POST" on-success="_uploadClientConfigDone">
-              <iron-icon class="icon" icon="file-upload"></iron-icon>
-              <span>[[localize('uploadClientConfig')]]</span><br>
-            </file-upload>
-            <div>
-                [[ballotDataInfo]]
-            </div>
+          <div name="mainActions" class="layout vertical center-center">
+            <paper-material class="layout vertical center-center">
+              <div class="layout horizontal">
+                <div class="layout vertical center-center self-start">
+                  <div class="layout vertical statusHeader">
+                      <h2>[[localize('votingDatabaseStatus')]]</h2>
+                  </div>
+                  <div class="layout horizontal infoPanel">
+                    <div class="layout vertical table">
+                      <div class="votesCount">
+                        [[localize('votesCount')]]
+                      </div>
+                      <div class="votesCount">
+                        [[localize('authenticatedVotesCount')]]
+                      </div>
+                      <div class="colDivider ballotData">
+                        [[localize('ballotDataLastUpdated')]]
+                      </div>
+                      <div class="ballotData">
+                        [[localize('budgetAreasCount')]]
+                      </div>
+                      <div class="ballotData">
+                        [[localize('budgetItemsCount')]]
+                      </div>
+                      <div class="config colDivider">
+                        [[localize('configLastUpdated')]]
+                      </div>
+                      <div class="config">
+                        [[localize('configHasClientConfig')]]
+                      </div>
+                      <div class="config">
+                        [[localize('configHasPublicKey')]]
+                      </div>
+                      <div class="config">
+                        [[localize('configHasAuthUrl')]]
+                      </div>
+                      <div class="readyForVoting colDivider">
+                        [[localize('readyForVoting')]]
+                      </div>
+                    </div>
+                    <div class="layout vertical table">
+                      <div id="votesCountColumn" class="votesCount">
+                        [[bootResponse.vote_count]]
+                      </div>
+                      <div id="votesCountColumn" class="votesCount">
+                        [[bootResponse.authenticated_vote_count]]
+                      </div>
+                      <div id="ballotDataUpdatedAgoColumn" class="colDividerNoLine ballotData">
+                        [[bootResponse.ballot_data_time_ago]]
+                      </div>
+                      <div id="areasCountColumn" class="ballotData">
+                        [[bootResponse.areas_count]]
+                      </div>
+                      <div id="itemsCountColumn" class="ballotData">
+                        [[bootResponse.items_count]]
+                      </div>
+                      <div id="configDataUpdatedAgoColumn" class="config colDividerNoLine">
+                        [[bootResponse.config_time_ago]]
+                      </div>
+                      <div class="config">
+                        [[bootResponse.client_config_exists]]
+                      </div>
+                      <div class="config">
+                        [[bootResponse.public_key_exists]]
+                      </div>
+                      <div class="config">
+                        [[bootResponse.auth_url_exists]]
+                      </div>
+                      <div class="readyForVoting colDividerNoLine">
+                        [[bootResponse.ready_for_voting]]
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <div class="layout vertical center-center self-start buttons" >
+                  <a href="/configuration/download_voting_database" id="downloadDbAHref">
+                    <paper-button id="downloadDbButton" raised class="lightButton" dialog-confirm>
+                      <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
+                      {{localize('downloadDatabase')}}
+                    </paper-button>
+                  </a>
 
-            <file-upload class="lightButton" id="clientConfigUpload" raised="true" multi="false" target="/configuration/upload_ballot_data" method="POST" on-success="_uploadClientConfigDone">
-              <iron-icon class="icon" icon="file-upload"></iron-icon>
-              <span>[[localize('uploadBallotData')]]</span><br>
-            </file-upload>
+                  <file-upload class="lightButton" id="newDataBaseUpload" raised="true" multi="false" target="/configuration/import_new_sql" method="POST" on-success="_newReadyDatabase">
+                    <iron-icon class="icon" icon="file-upload"></iron-icon>
+                    <span>[[localize('uploadNewDatabase')]]</span><br>
+                  </file-upload>
 
-            <a href="/configuration/download_voting_database">
-              <paper-button raised class="lightButton" dialog-confirm>
-                  <iron-icon class="icon" icon="settings-backup-restore"></iron-icon>
-                  {{localize('downloadDatabase')}}
-               </paper-button>
-            </a>
+                  <file-upload class="lightButton" id="clientConfigUpload" raised="true" multi="false" target="/configuration/upload_client_config" method="POST" on-success="_uploadClientConfigDone">
+                    <iron-icon class="icon" icon="file-upload"></iron-icon>
+                    <span>[[localize('uploadClientConfig')]]</span><br>
+                  </file-upload>
+
+                  <file-upload class="lightButton" id="clientBallotDataUpload" raised="true" multi="false" target="/configuration/upload_ballot_data" method="POST" on-success="_uploadBallotDone">
+                    <iron-icon class="icon" icon="file-upload"></iron-icon>
+                    <span>[[localize('uploadBallotData')]]</span><br>
+                  </file-upload>
+
+                  <paper-button id="clearAllVotesButton" raised class="redButton" dialog-confirm on-tap="_clearVotes">
+                    <iron-icon class="icon" icon="cancel"></iron-icon>
+                    {{localize('clearAllVotes')}}
+                  </paper-button>
+                </div>
+              </div>
+
+
+            </paper-material>
           </div>
         </iron-pages>
         <div class="layout horizontal center-center">
@@ -319,7 +457,9 @@
         countingCompleted: {
           type: Boolean,
           value: false
-        }
+        },
+
+        bootResponse: Object
       },
 
       listeners: {
@@ -336,10 +476,15 @@
       ],
 
       _newReadyDatabase: function () {
-        this.$$("#logoImageUpload").clear();
+        this.$$("#newDataBaseUpload").clear();
         this.fire('oav-reboot');
-        this.$$("#counting").reset();
       },
+
+      _uploadBallotDone: function () {
+        this.$$("#clientBallotDataUpload").clear();
+        this.fire('oav-reboot');
+      },
+
 
       _backupAndResetResponse: function (event, detail) {
         var dialog = Polymer.dom(document).querySelector('oav-admin-app').getDialog("unexpectedStateDialog");
@@ -363,19 +508,58 @@
 
       _bootResponse: function (event, detail) {
         var response = detail.response;
-        debugger;
+        //response.boot_state = "has_votes";
         if (response.boot_state==='unexpected') {
-          this.set('page','unexpected')
+          this.customStyle['--app-ballot-data-color'] = "#555";
+          this.customStyle['--app-config-color'] = "#555";
+          this.customStyle['--app-votes-count-color'] = "#000";
+          this.$.newDataBaseUpload.disabled = false;
+          this.$.clientConfigUpload.disabled = true;
+          this.$.clientBallotDataUpload.disabled = true;
+          this.$.downloadDbButton.disabled = true;
+          this.$.downloadDbAHref.href = "#";
+          this.$.clearAllVotesButton.disabled = true;
+          this.set('page','mainActions');
         } else if (response.boot_state==="has_votes") {
-          this.set('page','hasVotes');
+          this.customStyle['--app-ballot-data-color'] = "#555";
+          this.customStyle['--app-config-color'] = "#555";
+          this.customStyle['--app-votes-count-color'] = "#000";
+          this.$.newDataBaseUpload.disabled = true;
+          this.$.clientConfigUpload.disabled = true;
+          this.$.clientBallotDataUpload.disabled = true;
+          this.$.clearAllVotesButton.disabled = false;
+          this.$.downloadDbButton.disabled = false;
+          this.$.downloadDbAHref.href = "/configuration/download_voting_database";
+          this.set('page','mainActions');
         } else if (response.boot_state==="ready_for_config") {
-          this.set('page', 'readyForConfig');
+          this.customStyle['--app-ballot-data-color'] = "#000";
+          this.customStyle['--app-config-color'] = "#000";
+          this.customStyle['--app-votes-count-color'] = "#555";
+          this.$.newDataBaseUpload.disabled = false;
+          this.$.clientConfigUpload.disabled = false;
+          this.$.clientBallotDataUpload.disabled = false;
+          this.$.downloadDbAHref.disabled = false;
+          this.$.downloadDbButton.disabled = false;
+          this.$.clearAllVotesButton.disabled = true;
+          this.$.downloadDbAHref.href = "/configuration/download_voting_database";
+          this.set('page', 'mainActions');
         }
+
+        if (response.ready_for_voting) {
+          this.customStyle['--app-ready-for-voting-color'] = "green";
+        } else {
+          this.customStyle['--app-ready-for-voting-color'] = "#F00";
+        }
+        Polymer.updateStyles();
+
+
+        this.set('bootResponse', JSON.parse(JSON.stringify(response)));
       },
 
       _clearVotes: function () {
         var dialog = Polymer.dom(document).querySelector('oav-admin-app').getDialog("confirmationDialog");
-        dialog.open(this.localize('areYouSureYouWantToClearVotes'), this._reallyClearVotes.bind(this));
+        debugger;
+        dialog.open(this.localize('areYouSureYouWantToClearVotes'), this._reallyClearVotes.bind(this), this.bootResponse.vote_count);
       },
 
       _reallyClearVotes: function () {
@@ -391,6 +575,7 @@
       },
 
       _uploadClientConfigDone: function () {
+        this.$$("#clientConfigUpload").clear();
         this._boot();
       },
 

@@ -39,6 +39,7 @@ Example:
       max-height: 200px;
       overflow-y: auto;
       display: inline-block;
+      background: transparent !
     }
 
     #dropArea {
@@ -93,16 +94,20 @@ Example:
     paper-button {
       background-color: var(--app-accent-color-light);
       color: #FFF;
+      padding: 8px;
     }
 
+    paper-button[disabled] {
+      background-color: #777;
+    }
   </style>
 
   <template>
     <div class="containerMain layout vertical">
-      <paper-button id="button" icon="file-upload" class="blue" on-click="_fileClick">
+      <paper-button raised id="button" disabled$="[[disabled]]" icon="file-upload" class="blue" on-click="_fileClick">
         <content></content>
       </paper-button>
-      <div id='UploadBorder'>
+      <div id='UploadBorder' hidden$="[[isEmpty]]">
         <template is="dom-repeat" items="{{files}}">
           <div class="file">
             <div class="name">
@@ -244,6 +249,11 @@ Example:
         value: 'Retry Upload'
       },
 
+      isEmpty: {
+        type: Boolean,
+        computed: '_isEmpty(files.*)'
+      },
+
       /**
        * `removeText` is the text for the tooltip to remove an upload
       */
@@ -274,7 +284,19 @@ Example:
       _shownDropText: {
         type: Boolean,
         value: false
+      },
+
+      disabled: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true,
+        notify: true
       }
+    },
+
+    _isEmpty: function (files) {
+      var results = !this.files || this.files.length==0;
+      return results;
     },
 
     /**
@@ -282,6 +304,7 @@ Example:
     */
     clear: function() {
       this.set("files", []);
+      this.$.fileInput.value = "";
       this._showDropText();
     },
 

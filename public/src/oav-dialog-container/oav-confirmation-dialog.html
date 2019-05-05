@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 <link rel="import" href="../oav-behaviors/app-helpers.html">
 
@@ -15,19 +16,50 @@
         <style include="iron-flex iron-flex-alignment">
             paper-dialog {
                 background-color: #FFF;
+                color: var(--app-accent-color);
             }
 
             .confirmationText {
                 font-size: 18px;
+                color: #F00;
+                font-weight: 600;
+            }
+
+            .numberOfVotes {
+              color: #333;
+            }
+
+            .buttons {
+              color: var(--app-accent-color);
+            }
+
+            .clearButton {
+              background-color: #F00;
+              font-weight: 600;
+              color: #FFF;
+            }
+
+            .clearButton[disabled] {
+              color: #fff;
+              font-weight: 400;
+              background-color: #aaa;
             }
         </style>
 
         <paper-dialog id="confirmationDialog" modal>
+          <div class="layout vertical">
             <div class="confirmationText">[[confirmationText]]</div>
-            <div class="buttons">
-                <paper-button on-tap="_reset" dialog-dismiss>[[localize('cancel')]]</paper-button>
-                <paper-button dialog-confirm on-tap="_confirm">[[localize('confirm')]]</paper-button>
             </div>
+            <div class="numberOfVotes" hidden$="[[!numberOfVotes]]">[[localize('numberOfVotes')]]: [[numberOfVotes]]</div>
+            <div hidden$="[[!numberOfVotes]]">
+              <paper-input on-keyup="_checkVoteConfirm" value="{{voteConfirmValue}}" label$="[[localize('enterNumberOfVotesToConfirm')]]"></paper-input>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <paper-button on-tap="_reset" dialog-dismiss>[[localize('cancel')]]</paper-button>
+            <paper-button raised id="okButton" class="clearButton" disabled dialog-confirm on-tap="_confirm">[[localize('confirm')]]</paper-button>
+          </div>
         </paper-dialog>
 
     </template>
@@ -56,6 +88,16 @@
           onCancelFunction: {
             type: Function,
             value: null
+          },
+
+          numberOfVotes: {
+            type: Number,
+            value: null
+          },
+
+          voteConfirmValue: {
+            type: Number,
+            value: null
           }
         },
 
@@ -68,9 +110,21 @@
           this.set('onConfirmedFunction', null);
         },
 
-        open: function (confirmationText, onConfirmedFunction) {
+        _checkVoteConfirm: function () {
+          if (this.voteConfirmValue && this.voteConfirmValue == this.numberOfVotes) {
+            this.$.okButton.disabled = false;
+          } else {
+            this.$.okButton.disabled = true;
+          }
+        },
+
+        open: function (confirmationText, onConfirmedFunction, numberOfVotes) {
           this.set('confirmationText', confirmationText);
           this.set('onConfirmedFunction', onConfirmedFunction);
+          if (numberOfVotes) {
+            this.set('numberOfVotes', numberOfVotes);
+            this.$.okButton.disabled = true;
+          }
           this.$$("#confirmationDialog").open();
         },
 
