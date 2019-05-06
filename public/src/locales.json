@@ -12,6 +12,7 @@
     "votingDatabaseStatus": "Voting Database Status",
     "ballotDataLastUpdated": "Ballot data last updated",
     "configLastUpdated": "Config last updated",
+    "configCreatedAgo": "Config last created",
     "votesCount": "Total vote count",
     "budgetAreasCount": "Budget Areas count",
     "budgetItemsCount": "Budget Items count",

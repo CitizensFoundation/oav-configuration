@@ -246,7 +246,7 @@
       }
 
       .buttons {
-        padding-top: 53px;
+        padding-top: 72px;
         margin-left: 16px;
         margin-right: 16px;
       }
@@ -319,6 +319,9 @@
                         [[localize('configLastUpdated')]]
                       </div>
                       <div class="config">
+                        [[localize('configCreatedAgo')]]
+                      </div>
+                      <div class="config">
                         [[localize('configHasClientConfig')]]
                       </div>
                       <div class="config">
@@ -352,6 +355,9 @@
                       </div>
                       <div id="configDataUpdatedAgoColumn" class="config colDividerNoLine">
                         [[bootResponse.config_time_ago]]
+                      </div>
+                      <div id="configDataUpdatedAgoColumn" class="config">
+                        [[bootResponse.config_created_ago]]
                       </div>
                       <div class="config">
                         [[bootResponse.client_config_exists]]

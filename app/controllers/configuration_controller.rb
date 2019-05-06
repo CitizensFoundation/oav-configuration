@@ -46,6 +46,8 @@ class ConfigurationController < ApplicationController
       client_config = (config_table_exists and BudgetConfig.first and BudgetConfig.first.client_config!=nil)
       auth_url_exists = (config_table_exists and BudgetConfig.first and BudgetConfig.first.auth_url!=nil)
       config_updated_at = (config_table_exists and BudgetConfig.first and BudgetConfig.first.updated_at)
+      config_created_at = (config_table_exists and BudgetConfig.first and BudgetConfig.first.created_at)
+
       ballot_data_updated_at = (areas_table_exists and BudgetBallotArea.first and BudgetBallotArea.first.updated_at)
       total_voter_count = vote_table_exists ? Vote.where.not(:saml_assertion_id=>nil).distinct.count(:user_id_hash) : 0
 
@@ -83,6 +85,7 @@ class ConfigurationController < ApplicationController
                                      :public_key => public_key,
                                      :total_voter_count => total_voter_count,
                                      :config_time_ago => config_updated_at ? distance_of_time_in_words_to_now(config_updated_at) : "never",
+                                     :config_created_ago => config_created_at ? distance_of_time_in_words_to_now(config_created_at) : "never",
                                      :ballot_data_time_ago => ballot_data_updated_at ? distance_of_time_in_words_to_now(ballot_data_updated_at) : "never",
                                      :public_key_exists => public_key ? true : false,
                                      :exception => exception
