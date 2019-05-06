@@ -43,6 +43,7 @@ class ConfigurationController < ApplicationController
       auth_url_exists = (config_table_exists and BudgetConfig.first and BudgetConfig.first.auth_url!=nil)
       config_updated_at = (config_table_exists and BudgetConfig.first and BudgetConfig.first.updated_at)
       ballot_data_updated_at = (areas_table_exists and BudgetBallotArea.first and BudgetBallotArea.first.updated_at)
+      total_voter_count = vote_table_exists ? Vote.where.not(:saml_assertion_id=>nil).distinct.count(:user_id_hash) : 0
 
       if auth_url_exists and client_config and public_key and areas_count>0 and items_count>0
         ready_for_voting = true
@@ -75,6 +76,7 @@ class ConfigurationController < ApplicationController
                                      :auth_url_exists => auth_url_exists,
                                      :config_updated_at => config_updated_at,
                                      :ready_for_voting => ready_for_voting,
+                                     :total_voter_count => total_voter_count,
                                      :config_time_ago => config_updated_at ? distance_of_time_in_words_to_now(config_updated_at) : "never",
                                      :ballot_data_time_ago => ballot_data_updated_at ? distance_of_time_in_words_to_now(ballot_data_updated_at) : "never",
                                      :public_key_exists => public_key ? true : false,

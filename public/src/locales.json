@@ -1,5 +1,6 @@
 {
   "en": {
+    "uniqueVoters": "Unique voters",
     "numberOfVotes": "Total number of votes",
     "enterNumberOfVotesToConfirm": "Confirm by entering the total number of votes",
     "readyForVoting": "Ready for voting",

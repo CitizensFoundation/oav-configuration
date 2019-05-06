@@ -291,6 +291,9 @@
                       <div class="votesCount">
                         [[localize('authenticatedVotesCount')]]
                       </div>
+                      <div class="votesCount">
+                        [[localize('uniqueVoters')]]
+                      </div>
                       <div class="colDivider ballotData">
                         [[localize('ballotDataLastUpdated')]]
                       </div>
@@ -322,6 +325,9 @@
                       </div>
                       <div id="votesCountColumn" class="votesCount">
                         [[bootResponse.authenticated_vote_count]]
+                      </div>
+                      <div id="votersCountColumn" class="votesCount">
+                        [[bootResponse.total_voter_count]]
                       </div>
                       <div id="ballotDataUpdatedAgoColumn" class="colDividerNoLine ballotData">
                         [[bootResponse.ballot_data_time_ago]]
