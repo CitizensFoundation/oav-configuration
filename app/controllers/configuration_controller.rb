@@ -271,7 +271,6 @@ class ConfigurationController < ApplicationController
 
   def get_price(price)
     price = price.gsub(',','')
-    price = price.gsub('.','')
     price = price.gsub(' kr.','')
     price = price.to_f
   end
