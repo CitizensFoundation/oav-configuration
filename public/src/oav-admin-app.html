@@ -344,7 +344,7 @@
                       <div id="votersCountColumn" class="votesCount">
                         [[bootResponse.total_voter_count]]
                       </div>
-                      <div id="ballotDataUpdatedAgoColumn" class="colDividerNoLine ballotData">
+                      <div id="ballotDataUpdatedAgoColumn" class="colDividerNoLine ballotData" title="[[bootResponse.ballot_data_updated_at]]">
                         [[bootResponse.ballot_data_time_ago]]
                       </div>
                       <div id="areasCountColumn" class="ballotData">
@@ -353,10 +353,10 @@
                       <div id="itemsCountColumn" class="ballotData">
                         [[bootResponse.items_count]]
                       </div>
-                      <div id="configDataUpdatedAgoColumn" class="config colDividerNoLine">
+                      <div id="configDataUpdatedAgoColumn" class="config colDividerNoLine" title="[[bootResponse.config_updated_at]]">
                         [[bootResponse.config_time_ago]]
                       </div>
-                      <div id="configDataUpdatedAgoColumn" class="config">
+                      <div id="configDataUpdatedAgoColumn" class="config" title="[[bootResponse.config_created_at]]">
                         [[bootResponse.config_created_ago]]
                       </div>
                       <div class="config">
