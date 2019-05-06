@@ -166,6 +166,7 @@ class ConfigurationController < ApplicationController
   private
 
   def import_ballot_data_from_csv(csv_data)
+    csv_data.force_encoding('UTF-8')
     BudgetBallotItem.delete_all
     ActiveRecord::Base.connection.execute("TRUNCATE budget_ballot_items")
     BudgetBallotArea.delete_all
