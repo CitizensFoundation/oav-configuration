@@ -1,5 +1,6 @@
 {
   "en": {
+    "publicKey": "Current public key",
     "uniqueVoters": "Unique voters",
     "numberOfVotes": "Total number of votes",
     "enterNumberOfVotesToConfirm": "Confirm by entering the total number of votes",

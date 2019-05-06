@@ -250,6 +250,13 @@
         margin-left: 16px;
         margin-right: 16px;
       }
+
+      .publicKeyDisplay {
+        max-width: 600px;
+        overflow: auto;
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
     </style>
 
     <iron-signals on-iron-signal-set-language="setLanguage"></iron-signals>
@@ -385,9 +392,11 @@
                   </paper-button>
                 </div>
               </div>
-
-
-            </paper-material>
+              <div class="layout vertical publicKeyDisplay" hidden$="[[!bootResponse.public_key]]">
+                <h2>[[localize('publicKey')]]</h2>
+                <div>[[bootResponse.public_key]]</div>
+              </div>
+          </paper-material>
           </div>
         </iron-pages>
         <div class="layout horizontal center-center">
