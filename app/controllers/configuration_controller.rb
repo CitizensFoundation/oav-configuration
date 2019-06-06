@@ -225,11 +225,11 @@ class ConfigurationController < ApplicationController
     locales = []
     @budget_rows.each_with_index do |row, index|
       if row[2] and row[2].downcase=='costs'
-        row[6..row.length].each_slice(2).with_index do |(name, desc), index|
+        row[7..row.length].each_slice(2).with_index do |(name, desc), index|
           if name.split("-")[1]
             locales << {
               :locale_code => name.split("-")[1],
-              :index => (index*2)+6
+              :index => (index*2)+7
             }
           end
         end
@@ -287,8 +287,12 @@ class ConfigurationController < ApplicationController
         if row[0].downcase==@current_area_name.downcase
           puts "FOUND"
           idea_url = row[1]
-          idea_id, image_url = get_idea_id_and_image_from_url(idea_url)
-          puts image_url
+          if idea_url and idea_url!=""
+            idea_id, image_url = get_idea_id_and_image_from_url(idea_url)
+            puts image_url
+          elsif image_url = row[5]
+            idea_id = -1
+          end
 
           price = get_price(row[2])
 
