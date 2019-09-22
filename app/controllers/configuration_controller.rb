@@ -1,6 +1,6 @@
 # coding: utf-8
 
-# Copyright (C) 2010-2018 Íbúar ses / Citizens Foundation Iceland
+# Copyright (C) 2010-2019 Íbúar ses / Citizens Foundation Iceland
 # Authors Robert Bjarnason, Gunnar Grimsson, Gudny Maren Valsdottir & Alexander Mani Gautason
 #
 # This program is free software: you can redistribute it and/or modify
@@ -225,11 +225,11 @@ class ConfigurationController < ApplicationController
     locales = []
     @budget_rows.each_with_index do |row, index|
       if row[2] and row[2].downcase=='costs'
-        row[7..row.length].each_slice(2).with_index do |(name, desc), index|
+        row[8..row.length].each_slice(2).with_index do |(name, desc), index|
           if name.split("-")[1]
             locales << {
               :locale_code => name.split("-")[1],
-              :index => (index*2)+7
+              :index => (index*2)+8
             }
           end
         end
@@ -262,6 +262,9 @@ class ConfigurationController < ApplicationController
         I18n.locale = "is"
         area.name = row[0]
         area.save
+        I18n.locale = "pl"
+        area.name = row[0]
+        area.save
         I18n.locale = "en"
         @areas << area
       end
@@ -287,13 +290,14 @@ class ConfigurationController < ApplicationController
         if row[0].downcase==@current_area_name.downcase
           puts "FOUND"
           idea_url = row[1]
-          if idea_url and idea_url!=""
+          if idea_url and idea_url!="" and idea_url.length>10
             idea_id, image_url = get_idea_id_and_image_from_url(idea_url)
             puts image_url
           elsif image_url = row[5]
             idea_id = -1
           end
 
+          pdf_url = row[6]
           price = get_price(row[2])
 
           location_1 = row[3] and row[3].gsub(" ","")
@@ -310,6 +314,7 @@ class ConfigurationController < ApplicationController
             :budget_ballot_area_id=>@current_area_id,
             :locations=>locations,
             :image_url=>image_url,
+            :pdf_url=>pdf_url,
             :idea_url=>idea_url)
 
           @locales.each_with_index do |locale, locale_index|
