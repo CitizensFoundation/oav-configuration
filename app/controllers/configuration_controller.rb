@@ -252,7 +252,7 @@ class ConfigurationController < ApplicationController
         logger.info "Stopping import of areas at index #{index}"
         break
       end
-      if row[0] and row[1] and not row[2] and row[0].downcase != "area name"
+      if row[0] and row[1] and row[0].downcase != "area name"
         puts "areas: #{row[0]} #{row[1]} #{row[2]}"
         puts "FOUND"
         area = BudgetBallotArea.create!(:budget_amount => get_price(row[1]))
