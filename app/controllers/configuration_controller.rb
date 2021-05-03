@@ -297,7 +297,7 @@ class ConfigurationController < ApplicationController
             idea_id = -1
           end
 
-          pdf_url = row[6]
+          pdf_url = nil # row[6]
           price = get_price(row[2])
           if price>100000
             price = price/1000000
