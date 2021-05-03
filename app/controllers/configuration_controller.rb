@@ -345,7 +345,7 @@ class ConfigurationController < ApplicationController
     uri = URI(encoded_url)
     req = Net::HTTP::Get.new(uri)
     req['Content-Type'] = "application/json"
-    res = Net::HTTP.start(url.host, url.port) {|http| http.request(req) }
+    res = Net::HTTP.start(encoded_url.host, encoded_url.port) {|http| http.request(req) }
     puts res
     #res = Net::HTTP.get URI(idea_url)
     post_json = JSON.parse(res)
