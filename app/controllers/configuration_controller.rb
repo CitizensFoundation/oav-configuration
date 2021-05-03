@@ -343,8 +343,8 @@ class ConfigurationController < ApplicationController
     idea_id = idea_url.split('/').last
     encoded_url = URI.encode(idea_url)
     uri = URI(encoded_url)
-    req = Net::HTTP.get(uri)
-    req['content-type'] = "application/json"
+    req = Net::HTTP::Get.new(uri)
+    req['Content-Type'] = "application/json"
     res = Net::HTTP.start(url.host, url.port) {|http| http.request(req) }
     puts res
     #res = Net::HTTP.get URI(idea_url)
