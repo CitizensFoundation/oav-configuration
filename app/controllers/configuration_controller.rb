@@ -343,12 +343,14 @@ class ConfigurationController < ApplicationController
     idea_id = idea_url.split('/').last
     encoded_url = URI.encode(idea_url)
     uri = URI(encoded_url)
-    req = Net::HTTP::Get.new(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    req = Net::HTTP::Get.new(uri.request_uri)
+    http.use_ssl = true
+
     req['Content-Type'] = "application/json"
-    res = Net::HTTP.start(encoded_url.host, encoded_url.port) {|http| http.request(req) }
-    puts res
+    res = http.request(req)
     #res = Net::HTTP.get URI(idea_url)
-    post_json = JSON.parse(res)
+    post_json = JSON.parse(res.body)
     if post_json["PostHeaderImages"] and post_json["PostHeaderImages"].length>0
       puts post_json["PostHeaderImages"][0]
       image_url = JSON.parse(post_json["PostHeaderImages"][post_json["PostHeaderImages"].length-1]["formats"])[0]
