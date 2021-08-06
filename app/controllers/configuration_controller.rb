@@ -183,6 +183,7 @@ class ConfigurationController < ApplicationController
     ActiveRecord::Base.connection.execute("TRUNCATE budget_ballot_items")
     BudgetBallotArea.delete_all
     ActiveRecord::Base.connection.execute("TRUNCATE budget_ballot_areas")
+    ActiveRecord::Base.connection.execute("TRUNCATE budget_ballot_item_translations")
     csv_data = CSV.parse(csv_data).to_a
     @budget_rows = remove_empty_rows(csv_data)
 
@@ -225,11 +226,11 @@ class ConfigurationController < ApplicationController
     locales = []
     @budget_rows.each_with_index do |row, index|
       if row[2] and row[2].downcase=='costs'
-        row[8..row.length].each_slice(2).with_index do |(name, desc), index|
+        row[6..row.length].each_slice(2).with_index do |(name, desc), index|
           if name.split("-")[1]
             locales << {
               :locale_code => name.split("-")[1],
-              :index => (index*2)+8
+              :index => (index*2)+6
             }
           end
         end
