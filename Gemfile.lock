@@ -100,7 +100,6 @@ GEM
     passenger (6.0.12)
       rack
       rake (>= 0.8.1)
-    psych (4.0.2)
     racc (1.6.0)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -187,7 +186,6 @@ DEPENDENCIES
   mysql2
   nokogiri
   passenger
-  psych
   rails (= 5.2.6)
   rails-html-sanitizer
   ruby-saml!
