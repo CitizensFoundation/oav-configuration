@@ -97,7 +97,7 @@ GEM
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    passenger (6.0.7)
+    passenger (6.0.12)
       rack
       rake (>= 0.8.1)
     psych (4.0.2)
