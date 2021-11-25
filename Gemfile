@@ -39,7 +39,7 @@ gem 'nokogiri' # XML/HTML Parsing library
 #gem 'psych'
 #gem 'soap4r', :path =>"lib/soap4r" # git => 'https://github.com/rbjarnason/soap4r.git'
 #gem 'ruby-saml', :path => "lib/ruby-saml" # :git => 'https://github.com/rbjarnason/ruby-saml.git', :ref=>"63ce604db2e562eeb25467e7e1655d16bab7d9cb"
-gem "passenger", "6.0.5"
+gem "passenger", "6.0.4"
 gem 'loofah'
 gem "ffi"
 gem "rubyzip"
