@@ -343,7 +343,7 @@ class ConfigurationController < ApplicationController
     puts idea_url
 
     idea_id = idea_url.split('/').last
-    encoded_url = URI.encode(idea_url)
+    encoded_url = CGI.escape(idea_url)
     uri = URI(encoded_url)
     http = Net::HTTP.new(uri.host, uri.port)
     req = Net::HTTP::Get.new(uri.request_uri)

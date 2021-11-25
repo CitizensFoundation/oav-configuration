@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
-ruby '2.7.4'
+ruby '3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 #gem 'activesupport', '4.2.7.1', :path => "lib/rails/activesupport-4.2.7.1"
 #gem 'rake'
-gem 'rails', '5.2.6'
+gem 'rails', '6.1.4.1'
 #gem 'tzinfo-data'
 #gem 'rails-html-sanitizer'
-
+gem "webrick"
 #gem "sprockets", "<4"
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
@@ -39,7 +39,7 @@ gem 'nokogiri' # XML/HTML Parsing library
 #gem 'psych'
 #gem 'soap4r', :path =>"lib/soap4r" # git => 'https://github.com/rbjarnason/soap4r.git'
 #gem 'ruby-saml', :path => "lib/ruby-saml" # :git => 'https://github.com/rbjarnason/ruby-saml.git', :ref=>"63ce604db2e562eeb25467e7e1655d16bab7d9cb"
-gem "passenger", "6.0.3"
+gem "passenger"
 gem 'loofah'
 gem "ffi"
 gem "rubyzip"
