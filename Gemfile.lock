@@ -80,7 +80,7 @@ GEM
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    passenger (6.0.9)
+    passenger (6.0.8)
       rack
       rake (>= 0.8.1)
     racc (1.6.0)
@@ -154,7 +154,7 @@ DEPENDENCIES
   loofah
   mysql2
   nokogiri
-  passenger (= 6.0.9)
+  passenger (= 6.0.8)
   rails (= 5.2.6)
   rubyzip
   spring
