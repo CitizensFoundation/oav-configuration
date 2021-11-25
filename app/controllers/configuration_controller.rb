@@ -18,6 +18,7 @@
 
 require 'fileutils'
 require "csv"
+require "net/http"
 
 class ConfigurationController < ApplicationController
   include ActionView::Helpers::DateHelper
