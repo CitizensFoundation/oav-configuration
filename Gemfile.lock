@@ -137,6 +137,7 @@ DEPENDENCIES
   awesome_print
   byebug
   headless
+  mimemagic
   mysql2
   passenger
   rails (= 5.2.2)
