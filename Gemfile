@@ -30,7 +30,7 @@ gem 'rails', '5.2.6'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7o
 #gem "browser"
-#gem 'globalize'
+gem 'globalize'
 # Gems used in all environments including production
 #gem "airbrake" # Online error reporting system
 #gem 'haml' # generate html from templates
