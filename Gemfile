@@ -7,7 +7,7 @@ ruby '2.7.4'
 #gem 'rake'
 gem 'rails', '5.2.2'
 #gem 'rails', '5.2.6'
-gem 'mimemagic'
+gem 'mimemagic', '0.3.10'
 #gem 'tzinfo-data'
 #gem 'rails-html-sanitizer'
 
