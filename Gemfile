@@ -35,7 +35,7 @@ gem 'rails', '5.2.6'
 #gem "airbrake" # Online error reporting system
 #gem 'haml' # generate html from templates
 #gem 'jquery-rails' # Jquery for Rails
-#gem 'mysql2' # The Mysql Driver
+gem 'mysql2' # The Mysql Driver
 #gem 'nokogiri' # XML/HTML Parsing library
 #gem 'psych'
 #gem 'soap4r', :path =>"lib/soap4r" # git => 'https://github.com/rbjarnason/soap4r.git'
