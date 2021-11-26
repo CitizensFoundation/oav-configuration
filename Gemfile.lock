@@ -136,6 +136,7 @@ DEPENDENCIES
   awesome_print
   byebug
   headless
+  mimemagic (= 0.3.10)
   passenger
   rails (= 5.2.2)
   spring
