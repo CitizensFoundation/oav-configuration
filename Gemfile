@@ -5,10 +5,10 @@ ruby '2.7.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 #gem 'activesupport', '4.2.7.1', :path => "lib/rails/activesupport-4.2.7.1"
 #gem 'rake'
-gem 'rails', '5.2.4'
+gem 'rails', '5.2.2'
 #gem 'rails', '5.2.6'
 #gem 'mimemagic', '0.3.10'
-gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f' 
+#gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f' 
 #gem 'tzinfo-data'
 #gem 'rails-html-sanitizer'
 
@@ -37,7 +37,7 @@ gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dab
 #gem "airbrake" # Online error reporting system
 #gem 'haml' # generate html from templates
 #gem 'jquery-rails' # Jquery for Rails
-gem 'mysql2' # The Mysql Driver
+#gem 'mysql2' # The Mysql Driver
 #gem 'nokogiri' # XML/HTML Parsing library
 #gem 'psych'
 #gem 'soap4r', :path =>"lib/soap4r" # git => 'https://github.com/rbjarnason/soap4r.git'
