@@ -10,7 +10,7 @@ gem 'rails', '5.2.6'
 #gem 'tzinfo-data'
 #gem 'rails-html-sanitizer'
 
-#gem "sprockets", "<4"
+gem "sprockets", "<4"
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
 # Use SCSS for stylesheets
