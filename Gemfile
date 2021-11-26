@@ -5,7 +5,9 @@ ruby '2.7.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 #gem 'activesupport', '4.2.7.1', :path => "lib/rails/activesupport-4.2.7.1"
 #gem 'rake'
-gem 'rails', '5.2.6'
+gem 'rails', '5.2.1'
+#gem 'rails', '5.2.6'
+
 #gem 'tzinfo-data'
 #gem 'rails-html-sanitizer'
 
