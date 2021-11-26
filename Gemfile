@@ -28,21 +28,21 @@ gem 'rails', '5.2.6'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7o
-gem "browser"
-gem 'globalize'
+#gem "browser"
+#gem 'globalize'
 # Gems used in all environments including production
 #gem "airbrake" # Online error reporting system
-gem 'haml' # generate html from templates
+#gem 'haml' # generate html from templates
 #gem 'jquery-rails' # Jquery for Rails
 gem 'mysql2' # The Mysql Driver
-gem 'nokogiri' # XML/HTML Parsing library
+#gem 'nokogiri' # XML/HTML Parsing library
 #gem 'psych'
 #gem 'soap4r', :path =>"lib/soap4r" # git => 'https://github.com/rbjarnason/soap4r.git'
 #gem 'ruby-saml', :path => "lib/ruby-saml" # :git => 'https://github.com/rbjarnason/ruby-saml.git', :ref=>"63ce604db2e562eeb25467e7e1655d16bab7d9cb"
 gem "passenger"
-gem 'loofah'
-gem "ffi"
-gem "rubyzip"
+#gem 'loofah'
+#gem "ffi"
+#gem "rubyzip"
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
