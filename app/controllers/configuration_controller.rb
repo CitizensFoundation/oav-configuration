@@ -292,10 +292,16 @@ class ConfigurationController < ApplicationController
         if row[0].downcase==@current_area_name.downcase
           puts "FOUND"
           idea_url = row[1]
+          idea_url = idea_url.downcase
           if idea_url and idea_url!="" and idea_url.length>10
-            idea_id, image_url = get_idea_id_and_image_from_url(idea_url)
-            puts image_url
-          elsif image_url = row[5]
+            if idea_url.ends_with?(".png") or idea_url.ends_with?(".jpg") or idea_url.ends_with?(".jpeg")
+              image_url = idea_url
+              idea_id = -1
+            else
+              idea_id, image_url = get_idea_id_and_image_from_url(idea_url)
+              puts image_url
+            end
+          else
             idea_id = -1
           end
 
