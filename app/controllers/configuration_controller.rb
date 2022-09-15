@@ -320,6 +320,12 @@ class ConfigurationController < ApplicationController
             locations = location_1
           end
 
+          optional_image = row[5]
+
+          if optional_image.ends_with?(".png") or optional_image.ends_with?(".jpg") or optional_image.ends_with?(".jpeg")
+            image_url = optional_image
+          end
+
           item = BudgetBallotItem.create!(:price=>price,
             :idea_id=>idea_id,
             :budget_ballot_area_id=>@current_area_id,
