@@ -307,9 +307,9 @@ class ConfigurationController < ApplicationController
 
           pdf_url = nil # row[6]
           price = get_price(row[2])
-          if price>100000
-            price = price/1000000
-          end
+          #if price>100000
+          #  price = price/1000000
+          #end
 
           location_1 = row[3] and row[3].gsub(" ","")
           location_2 = row[4] and row[4].gsub(" ","")
