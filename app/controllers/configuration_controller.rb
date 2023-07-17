@@ -227,12 +227,16 @@ class ConfigurationController < ApplicationController
     locales = []
     @budget_rows.each_with_index do |row, index|
       if row[2] and row[2].downcase=='costs'
+        puts "DEBUG: #{row[6..row.length]}]}"
         row[6..row.length].each_slice(2).with_index do |(name, desc), index|
+          puts "DEBUG: #{name} #{desc} #{index}"
           if name.split("-")[1]
             locales << {
               :locale_code => name.split("-")[1],
               :index => (index*2)+6
             }
+
+            puts "DEBUG: #{locales}"
           end
         end
         break
@@ -292,9 +296,8 @@ class ConfigurationController < ApplicationController
         if row[0].downcase==@current_area_name.downcase
           puts "FOUND"
           idea_url = row[1]
-          idea_url = idea_url.downcase
           if idea_url and idea_url!="" and idea_url.length>10
-            if idea_url.ends_with?(".png") or idea_url.ends_with?(".jpg") or idea_url.ends_with?(".jpeg")
+            if idea_url.downcase.ends_with?(".png") or idea_url.downcase.ends_with?(".jpg") or idea_url.downcase.ends_with?(".jpeg")
               image_url = idea_url
               idea_id = -1
             else
@@ -331,8 +334,8 @@ class ConfigurationController < ApplicationController
 
           @locales.each_with_index do |locale, locale_index|
             I18n.locale = locale[:locale_code]
-            name = row[locale[:index]-1]
-            description = row[locale[:index]]
+            name = row[locale[:index]]
+            description = row[locale[:index]+1]
             #puts "LOCALE: #{locale} #{name} - #{description}"
             item.name = name
             item.description = description
