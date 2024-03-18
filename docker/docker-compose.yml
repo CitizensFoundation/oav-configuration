@@ -5,7 +5,7 @@ services:
     build:
       context: ./webserver
       dockerfile: Dockerfile
-    container_name: oav_web
+    container_name: oav_configuration
     ports:
       - "443:443"
     environment:
