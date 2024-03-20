@@ -3,11 +3,11 @@ version: '3.8'
 services:
   web:
     build:
-      context: ./webserver
-      dockerfile: Dockerfile
+      context: ../../.
+      dockerfile: docker/webserver/Dockerfile
     container_name: oav_configuration
     ports:
-      - "443:443"
+      - "80:80"
     environment:
       - HOME=/root
       - APP_DB_HOST=10.10.11.101
