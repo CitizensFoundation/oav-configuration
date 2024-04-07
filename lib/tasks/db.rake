@@ -63,11 +63,12 @@ namespace :db do
   private
 
   def with_config
+    db_config = ActiveRecord::Base.connection_db_config.configuration_hash
     yield Rails.application.class.module_parent_name.underscore,
-        ActiveRecord::Base.connection_config[:host],
-        ActiveRecord::Base.connection_config[:database],
-        ActiveRecord::Base.connection_config[:username],
-        ActiveRecord::Base.connection_config[:password]
+          db_config[:host],
+          db_config[:database],
+          db_config[:username],
+          db_config[:password]
   end
 
 end
