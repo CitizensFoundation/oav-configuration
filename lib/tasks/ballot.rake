@@ -4,6 +4,7 @@ require "csv"
 #require "ap"
 require 'net/http'
 require 'net/https'
+require 'cgi'
 
 class Array
   def shuffle
@@ -271,7 +272,7 @@ namespace :ballot do
     if idea_url
       idea_id = idea_url.split('/').last
       post_url = "https://www.betraisland.is/api/posts/"+idea_id
-      encoded_url = URI.encode(post_url)
+      encoded_url = CGI.escape(post_url)
       uri = URI(encoded_url)
       res = Net::HTTP.get(uri)
       #puts res
