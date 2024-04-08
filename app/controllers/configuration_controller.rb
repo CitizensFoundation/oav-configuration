@@ -20,6 +20,8 @@ require 'fileutils'
 require "csv"
 require "net/http"
 require 'cgi'
+require 'uri'
+require 'json'
 
 class ConfigurationController < ApplicationController
   include ActionView::Helpers::DateHelper
@@ -350,26 +352,43 @@ class ConfigurationController < ApplicationController
 
   def get_idea_id_and_image_from_url(idea_url)
     puts "get_idea_id_and_image_from_url #{idea_url}"
-    idea_url = idea_url.gsub("/post/","/api/posts/")
+    # Update the URL to target the API endpoint if needed
+    idea_url = idea_url.gsub("/post/", "/api/posts/")
     puts idea_url
 
+    # Extract the idea ID
     idea_id = idea_url.split('/').last
-    encoded_url = CGI.escape(idea_url)
-    uri = URI(encoded_url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    req = Net::HTTP::Get.new(uri.request_uri)
-    http.use_ssl = true
 
+    # Parse the URL and prepare the HTTP request
+    uri = URI.parse(idea_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = (uri.scheme == 'https') # Enable SSL/TLS if using HTTPS
+
+    req = Net::HTTP::Get.new(uri)
     req['Content-Type'] = "application/json"
-    res = http.request(req)
-    #res = Net::HTTP.get URI(idea_url)
-    post_json = JSON.parse(res.body)
-    if post_json["PostHeaderImages"] and post_json["PostHeaderImages"].length>0
-      puts post_json["PostHeaderImages"][0]
-      image_url = JSON.parse(post_json["PostHeaderImages"][post_json["PostHeaderImages"].length-1]["formats"])[0]
-      puts image_url
-    else
+
+    begin
+      res = http.request(req)
+      post_json = JSON.parse(res.body)
+
+      # Initialize default image URL
       image_url = "https://i.imgur.com/sdsFAoT.png"
+
+      if post_json["PostHeaderImages"] && !post_json["PostHeaderImages"].empty?
+        # Assuming the structure and that the last element has the image URL you need
+        if post_json["PostHeaderImages"].last["formats"]
+          image_info = post_json["PostHeaderImages"].last["formats"]
+          # Assuming image_info is a JSON string that needs parsing
+          image_url = JSON.parse(image_info)[0] if image_info.is_a?(String)
+        end
+        puts post_json["PostHeaderImages"][0] # Log the first image for reference
+        puts image_url # Log the determined image URL
+      end
+
+    rescue JSON::ParserError => e
+      puts "Error parsing JSON response: #{e.message}"
+    rescue => e
+      puts "An error occurred: #{e.message}"
     end
 
     return idea_id, image_url
