@@ -34,10 +34,10 @@ class ConfigurationController < ApplicationController
     public_key = nil
 
     begin
-      vote_table_exists = ActiveRecord::Base.connection.table_exist? 'votes'
-      config_table_exists = ActiveRecord::Base.connection.table_exist? 'config'
-      items_table_exists = ActiveRecord::Base.connection.table_exist? 'budget_ballot_items'
-      areas_table_exists = ActiveRecord::Base.connection.table_exist? 'budget_ballot_areas'
+      vote_table_exists = ActiveRecord::Base.connection.table_exists? 'votes'
+      config_table_exists = ActiveRecord::Base.connection.table_exists? 'config'
+      items_table_exists = ActiveRecord::Base.connection.table_exists? 'budget_ballot_items'
+      areas_table_exists = ActiveRecord::Base.connection.table_exists? 'budget_ballot_areas'
       vote_count = (vote_table_exists and Vote.count) ? Vote.count : 0
       authenticated_vote_count = (vote_table_exists) ? Vote.where.not(:saml_assertion_id=>nil).count : 0
       items_count = (items_table_exists and BudgetBallotItem.count) ? BudgetBallotItem.count : 0
