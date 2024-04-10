@@ -34,10 +34,10 @@ class ConfigurationController < ApplicationController
     public_key = nil
 
     begin
-      vote_table_exists = ActiveRecord::Base.connection.table_exists? 'votes'
-      config_table_exists = ActiveRecord::Base.connection.table_exists? 'config'
-      items_table_exists = ActiveRecord::Base.connection.table_exists? 'budget_ballot_items'
-      areas_table_exists = ActiveRecord::Base.connection.table_exists? 'budget_ballot_areas'
+      vote_table_exists = ActiveRecord::Base.connection.table_exist? 'votes'
+      config_table_exists = ActiveRecord::Base.connection.table_exist? 'config'
+      items_table_exists = ActiveRecord::Base.connection.table_exist? 'budget_ballot_items'
+      areas_table_exists = ActiveRecord::Base.connection.table_exist? 'budget_ballot_areas'
       vote_count = (vote_table_exists and Vote.count) ? Vote.count : 0
       authenticated_vote_count = (vote_table_exists) ? Vote.where.not(:saml_assertion_id=>nil).count : 0
       items_count = (items_table_exists and BudgetBallotItem.count) ? BudgetBallotItem.count : 0
@@ -161,7 +161,7 @@ class ConfigurationController < ApplicationController
     system "rake db:dump_backup_for_download"
     download_filename = Rails.root.join("Backups","sql","latest_for_download.sql")
     puts download_filename
-    if File.exists?(download_filename)
+    if File.exist?(download_filename)
       send_file download_filename, :filename=>"open_active_voting_database_#{Time.now.strftime('%Y_%m_%d.%H_%M_%S')}.sql"
     else
       render :file=>"#{Rails.root}/public/404.html", :status=>404
