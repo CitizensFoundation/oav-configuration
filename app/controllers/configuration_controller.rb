@@ -214,7 +214,7 @@ class ConfigurationController < ApplicationController
   def get_items_start_line
     items_start_row = nil
     @budget_rows.each_with_index do |row, index|
-      if row[2] and row[2].downcase=='costs'
+      if row[4] and row[4].downcase=='costs'
         items_start_row = index+1
         break
       end
@@ -229,14 +229,14 @@ class ConfigurationController < ApplicationController
   def get_all_locales
     locales = []
     @budget_rows.each_with_index do |row, index|
-      if row[2] and row[2].downcase=='costs'
-        puts "DEBUG: #{row[6..row.length]}]}"
-        row[6..row.length].each_slice(2).with_index do |(name, desc), index|
+      if row[4] and row[4].downcase=='costs'
+        puts "DEBUG: #{row[7..row.length]}]}"
+        row[7..row.length].each_slice(2).with_index do |(name, desc), index|
           puts "DEBUG: #{name} #{desc} #{index}"
           if name.split("-")[1]
             locales << {
               :locale_code => name.split("-")[1],
-              :index => (index*2)+6
+              :index => (index*2)+7
             }
 
             puts "DEBUG: #{locales}"
@@ -257,7 +257,7 @@ class ConfigurationController < ApplicationController
     puts "import_ballot_areas"
     @budget_rows[0..@budget_rows.length].each_with_index do |row, index|
       puts index
-      if row[2] and row[2].downcase=='costs'
+      if row[4] and row[4].downcase=='costs'
         logger.info "Stopping import of areas at index #{index}"
         break
       end
@@ -287,6 +287,15 @@ class ConfigurationController < ApplicationController
     price = price.to_f
   end
 
+  # 0 - Area
+  # 1 - Idea URL
+  # 2 - Image URL
+  # 3 - PDF URL
+  # 4 - Price
+  # 5 - Location 1
+  # 6 - Location 2
+
+
   def import_ballot_items
     @current_area_name = nil
     @current_area_id = nil
@@ -299,33 +308,33 @@ class ConfigurationController < ApplicationController
         if row[0].downcase==@current_area_name.downcase
           puts "FOUND"
           idea_url = row[1]
+          image_url = row[2]
+          pdf_url = row[3]
+
           if idea_url and idea_url!="" and idea_url.length>10
-            if idea_url.downcase.ends_with?(".png") or idea_url.downcase.ends_with?(".jpg") or idea_url.downcase.ends_with?(".jpeg")
-              image_url = idea_url
-              idea_id = -1
-            else
-              idea_id, image_url = get_idea_id_and_image_from_url(idea_url)
-              puts image_url
+            idea_id, idea_image_url = get_idea_id_and_image_from_url(idea_url)
+
+            if not image_url or image_url==""
+              image_url = idea_image_url
             end
           else
             idea_id = -1
           end
 
-          price = get_price(row[2])
+          price = get_price(row[4])
+
           if price>100000
             price = price/1000000
           end
 
-          location_1 = row[3] and row[3].gsub(" ","")
-          location_2 = row[4] and row[4].gsub(" ","")
+          location_1 = row[5] and row[5].gsub(" ","")
+          location_2 = row[6] and row[6].gsub(" ","")
 
           if location_2
             locations = "#{location_1},#{location_2}"
           else
             locations = location_1
           end
-
-          pdf_url = row[5]
 
           item = BudgetBallotItem.create!(:price=>price,
             :idea_id=>idea_id,
